@@ -17,3 +17,4 @@ This Repository Contains Practice tasks/codes.
 * struct.go
 * methods.go
 * interface.go
+* json.go
