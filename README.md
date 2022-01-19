@@ -21,3 +21,21 @@ This Repository Contains Practice tasks/codes.
 * goroutine.go
 * channels.go
 * channels
+  * anonymous_goroutine.go
+  * brain_teaser.go
+  * buffer.go
+  * channel_datatype.go
+  * close_channel.go
+  * closed_buffer.go
+  * deadlock.go
+  * default_deadlock.go
+  * empty_select.go
+  * len_cap.go
+  * loop.go
+  * multiple_goroutines.go
+  * nil.go
+  * select.go
+  * select_default.go
+  * simple_channel.go
+  * timeout.go
+  * unidirectional_channels.go
