@@ -18,3 +18,6 @@ This Repository Contains Practice tasks/codes.
 * methods.go
 * interface.go
 * json.go
+* goroutine.go
+* channels.go
+* channels
