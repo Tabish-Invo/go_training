@@ -39,3 +39,5 @@ This Repository Contains Practice tasks/codes.
   * simple_channel.go
   * timeout.go
   * unidirectional_channels.go
+* stringformatting.go
+* errors.go
