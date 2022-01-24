@@ -1,0 +1,5 @@
+mode: set
+golang/greeting/main.go:9.13,15.2 4 0
+golang/greeting/hello.go:7.31,9.19 1 1
+golang/greeting/hello.go:9.19,11.3 1 1
+golang/greeting/hello.go:11.8,13.3 1 1
