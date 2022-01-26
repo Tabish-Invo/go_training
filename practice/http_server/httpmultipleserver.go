@@ -61,18 +61,59 @@
 // 	return &server
 // }
 
+// //close method
+
+// package main
+
+// import (
+// 	"fmt"
+// 	"net/http"
+// 	"time"
+// )
+
+// func main() {
+
+// 	// create channels for safe exit
+// 	exitSignal := make(chan interface{})
+
+// 	// create server to run on port the 9000
+// 	server := &http.Server{
+// 		Addr:    ":9000",
+// 		Handler: nil, // use `DefaultServeMux`
+// 	}
+
+// 	// close server after 3 seconds
+// 	time.AfterFunc(10*time.Second, func() {
+// 		fmt.Println("Close(): completed!", server.Close()) // close `server`
+// 		close(exitSignal)                                  // close `exitSignal` channel
+// 	})
+
+// 	// launch server
+// 	err := server.ListenAndServe()
+// 	fmt.Println("ListenAndServe():", err)
+
+// 	// listen to `exitSignal` channel
+// 	<-exitSignal
+// 	fmt.Println("Main(): exit complete!")
+// }
+
+// //Shtudown
+
 package main
 
 import (
+	"context"
 	"fmt"
 	"net/http"
+	"sync"
 	"time"
 )
 
 func main() {
 
-	// create channels for safe exit
-	exitSignal := make(chan interface{})
+	// create a `WaitGroup` for safe exit
+	wg := new(sync.WaitGroup)
+	wg.Add(2) // add `2` goroutines to finish
 
 	// create server to run on port the 9000
 	server := &http.Server{
@@ -80,17 +121,23 @@ func main() {
 		Handler: nil, // use `DefaultServeMux`
 	}
 
-	// close server after 3 seconds
-	time.AfterFunc(10*time.Second, func() {
-		fmt.Println("Close(): completed!", server.Close()) // close `server`
-		close(exitSignal)                                  // close `exitSignal` channel
+	// register a cleanup function
+	server.RegisterOnShutdown(func() {
+		fmt.Println("RegisterOnShutdown(): completed!") // perform a cleanup
+		wg.Done()                                       // WaitGroup done
+	})
+
+	// shutdown server after 3 seconds
+	time.AfterFunc(3*time.Second, func() {
+		err := server.Shutdown(context.Background()) // shutdown `server`
+		fmt.Println("Shutdown(): completed!", err)
+		wg.Done() // WaitGroup done
 	})
 
 	// launch server
-	err := server.ListenAndServe()
-	fmt.Println("ListenAndServe():", err)
+	fmt.Println("ListenAndServe():", server.ListenAndServe())
 
-	// listen to `exitSignal` channel
-	<-exitSignal
+	// listen for `wg` to complete
+	wg.Wait()
 	fmt.Println("Main(): exit complete!")
 }
